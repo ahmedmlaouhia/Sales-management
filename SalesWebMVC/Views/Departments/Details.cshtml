@@ -1,0 +1,25 @@
+﻿@model SalesWebMVC.Models.Department
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h3>Department</h3>
+    <hr />
+    <dl class="row">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-light mt-3">Edit</a>
+    <br />
+    <a asp-action="Index" class="btn btn-light mt-3">Back to List</a>
+</div>
