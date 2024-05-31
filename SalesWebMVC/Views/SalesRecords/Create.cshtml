@@ -1,0 +1,62 @@
+﻿@model SalesWebMVC.Models.SalesRecord
+
+@{
+    ViewData["Title"] = "Create";
+    ViewData["Subtitle"] = "SalesRecord";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h4>@ViewData["Subtitle"]</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DateOnly" class="col-lg-2 form-label"></label>
+                <div class="col-lg-10">
+                    <input asp-for="DateOnly" class="form-control" type="date" />
+                    <span asp-validation-for="DateOnly" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeOnly" class="col-lg-2 form-label"></label>
+                <div class="col-lg-10">
+                    <input asp-for="TimeOnly" class="form-control" type="time" required />
+                    <span asp-validation-for="TimeOnly" class="text-danger"></span>
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<SalesWebMVC.Models.Enums.SaleStatus>()"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Seller" class="control-label"></label>
+                <select asp-for="Seller.Id" class="form-control" asp-items="ViewBag.SellerId"></select>
+                <span asp-validation-for="Seller.Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

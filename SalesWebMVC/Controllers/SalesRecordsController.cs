@@ -1,15 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SalesWebMVC.Models;
 using SalesWebMVC.Services;
 
 namespace SalesWebMVC.Controllers
 {
-    public class SalesRecordsController(SalesRecordService salesRecordService) : Controller
+    public class SalesRecordsController : Controller
     {
-        private readonly SalesRecordService _salesRecordService = salesRecordService;
+        private readonly SalesRecordService _salesRecordService;
+        private readonly SellerService _sellerService;
+
+        public SalesRecordsController(SalesRecordService salesRecordService, SellerService sellerService)
+        {
+            _salesRecordService = salesRecordService;
+            _sellerService = sellerService;
+        }
         public IActionResult Index()
         {
             return View();
         }
+
+        public async Task<IActionResult> Create()
+        {
+            var sellers = await _sellerService.FindAllAsync();
+            ViewBag.SellerId = new SelectList(sellers, "Id", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,DateOnly,TimeOnly,Amount,Status,SellerId")] SalesRecord salesRecord)
+        {
+            if (ModelState.IsValid)
+            {
+                await _salesRecordService.InsertAsync(salesRecord);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(salesRecord);
+        }
+
 
         public async Task<IActionResult> SimpleSearch(DateOnly? minDate, DateOnly? maxDate)
         {
